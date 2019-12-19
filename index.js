@@ -1,5 +1,19 @@
 const express = require("express");
+const mongoose = require("mongoose");
 require("./services/passport");
+
+const keys = require("./config/keys");
+
+const DB = keys.mongoURI.replace("<password>", keys.mongoPassword);
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log("DB connnection successful!"));
 
 const app = express();
 
