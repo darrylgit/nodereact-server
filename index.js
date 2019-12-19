@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 require("./services/passport");
 
 const keys = require("./config/keys");
+require("./models/User");
 
 const DB = keys.mongoURI.replace("<password>", keys.mongoPassword);
 
