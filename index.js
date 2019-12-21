@@ -7,7 +7,7 @@ require("./services/passport");
 
 const keys = require("./config/keys");
 
-const DB = keys.mongoURI.replace("<password>", keys.mongoPassword);
+const DB = keys.mongoURI;
 
 mongoose
   .connect(DB, {
