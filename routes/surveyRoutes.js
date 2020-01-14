@@ -25,7 +25,14 @@ module.exports = app => {
       }
     });
 
-    console.log(events);
+    // _.compact() removes any elements with the value undefined
+    const compactEvents = _.compact(events);
+    // _.uniqBy takes an array and ensures uniqueness based on the keys specificied as a list of arguments
+    const uniqueEvents = _.uniqBy(compactEvents, "email", "surveyId");
+
+    console.log(uniqueEvents);
+
+    res.send({});
   });
 
   app.post("/api/surveys", requireLogin, requireCredits, async (req, res) => {
