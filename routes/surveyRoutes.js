@@ -20,7 +20,7 @@ module.exports = app => {
     // LODASH METHODS:
     // _.compact() removes any elements with the value undefined
     // _.uniqBy() takes an array and ensures uniqueness (i.e. creates a set) based on the keys specificied as a list of arguments
-    const events = _.chain(req.body)
+    _.chain(req.body)
       .map(({ email, url }) => {
         const match = p.test(new URL(url).pathname);
         if (match) {
@@ -29,9 +29,21 @@ module.exports = app => {
       })
       .compact()
       .uniqBy("email", "surveyId")
+      .each(({ surveyId, choice, email }) => {
+        Survey.updateOne(
+          {
+            _id: surveyId,
+            recipients: {
+              $elemMatch: { email: email, responded: false }
+            }
+          },
+          {
+            $inc: { [choice]: 1 },
+            $set: { "recipients.$.responded": true }
+          }
+        ).exec();
+      })
       .value();
-
-    console.log(events);
 
     res.send({});
   });
